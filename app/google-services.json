@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "670989422354",
+    "project_id": "tasklist-fc8a7",
+    "storage_bucket": "tasklist-fc8a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670989422354:android:9044513ddc4b017543adcb",
+        "android_client_info": {
+          "package_name": "br.edu.infnet.atv.one.tasklist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARIFz3SwI2Nq2Mzzd8REyLAZyrCjqQ81A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cian900">#FF050814</color>
+    <color name="cian800">#FF1A2730</color>
+    <color name="cian700">#FF056458</color>
+    <color name="cian500">#FF2F9795</color>
+    <color name="cian300">#CC89CCC3</color>
+    <color name="cian100">#CCFAF7EB</color>
+    <color name="red300">#FFFC977E</color>
+    <color name="red600">#FFEA7153</color>
+    <color name="red900">#FFC34433</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
