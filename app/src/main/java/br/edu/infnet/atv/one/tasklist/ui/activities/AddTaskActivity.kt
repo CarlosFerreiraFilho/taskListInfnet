@@ -1,18 +1,20 @@
 package br.edu.infnet.atv.one.tasklist.ui.activities
 
-import br.edu.infnet.atv.one.tasklist.utils.ToastUtils
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.infnet.atv.one.tasklist.R
 import br.edu.infnet.atv.one.tasklist.data.models.Task
 import br.edu.infnet.atv.one.tasklist.databinding.ActivityAddTaskBinding
 import br.edu.infnet.atv.one.tasklist.ui.fragments.SaveButtonFragment
+import br.edu.infnet.atv.one.tasklist.utils.ToastUtils
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.database
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddTaskActivity : AppCompatActivity(), SaveButtonFragment.OnSaveButtonClickListener {
     private val database = Firebase.database
@@ -20,6 +22,7 @@ class AddTaskActivity : AppCompatActivity(), SaveButtonFragment.OnSaveButtonClic
     lateinit var binding: ActivityAddTaskBinding
     var taskIdToEdit: String = ""
     var isUpdate = false
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +36,7 @@ class AddTaskActivity : AppCompatActivity(), SaveButtonFragment.OnSaveButtonClic
             .commit()
 
         taskToEdit()
+        setupDatePicker()
     }
 
     override fun onSaveClicked() {
@@ -68,18 +72,55 @@ class AddTaskActivity : AppCompatActivity(), SaveButtonFragment.OnSaveButtonClic
             }
         }
     }
+
     fun backPage(view: View) {
         onBackPressedDispatcher.onBackPressed()
-//        val intent= Intent(this,MainActivity::class.java)
-//        startActivity(intent)
-//        finish()
     }
+
     private fun validateTaskFields(title: String, description: String): Boolean {
         return if (title.isEmpty() || description.isEmpty()) {
             ToastUtils.showToast(this, getString(R.string.all_fields_are_mandatory))
             false
         } else {
             true
+        }
+    }
+
+    private fun setupDatePicker() {
+        val calendar = Calendar.getInstance()
+
+        val savedDate = binding.editDueDate.text.toString()
+        if (savedDate.isNotEmpty()) {
+            try {
+                val parsedDate = dateFormat.parse(savedDate)
+                parsedDate?.let {
+                    calendar.time = it
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        val datePicker = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.MONTH, month)
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+            binding.editDueDate.setText(dateFormat.format(calendar.time))
+        }
+
+        binding.editDueDate.apply {
+            isFocusable = false
+            isClickable = true
+            setOnClickListener {
+                DatePickerDialog(
+                    this@AddTaskActivity,
+                    datePicker,
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }
         }
     }
 }
